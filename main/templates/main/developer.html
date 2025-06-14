@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+{% endblock head %}
+
+{% block title %} DEVELOPER | BUG TRACKER {% endblock title %}
+
+{% block body %}
+{% include 'main/topbar.html' %}
+
+<section class="objectContainer">
+    <h3 class="objectHead">HOME - DEVELOPER</h3>
+    <div class="objectBlock">
+        <div class="objectListSide">
+            <div class="objectListBlock">
+                <h3 class="objectSubHead">Reported Bugs</h3>
+                <ul class="objectList">
+                    {% for bug in bugs %}
+                    <li class="objectListItem">
+                        <h5 class="objectListItemHead">#{{bug.bug_id}} - {{bug.name}}</h5>
+                        <p class="objectListItemDesc">
+                            {{bug.description}}
+                        </p>
+                        <p class="objectListItemDateTime">{{bug.timestamp}}</p>
+                        <div class="objectListItemProperties">
+                            <p>({{bug.category}})</p>
+                            <p>Priority: <span class="{{bug.priority}}">{{bug.priority}}</span></p>
+                        </div>
+                        <div class="objectListItemProp">
+                            <div class="objectListItemAction">
+                               
+                                <a href="/reject_report/{{bug.bug_id}}/" class="objectActionPrimary">Reject</a>
+                                <a href="/resolve_report/{{bug.bug_id}}/" class="objectActionSecondary">Resolve</a>
+                              
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'main/footer.html' %}
+{% endblock body %}

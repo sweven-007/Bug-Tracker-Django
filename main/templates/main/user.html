@@ -1,0 +1,92 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+{% endblock head %}
+
+{% block title %} USER | BUG TRACKER {% endblock title %}
+
+{% block body %}
+{% include 'main/topbar.html' %}
+
+<section class="objectContainer">
+    <h3 class="objectHead">HOME - USER</h3>
+    <div class="objectBlock">
+        <div class="objectListSide">
+            <div class="objectListBlock">
+                <h3 class="objectSubHead">Reported Bugs</h3>
+                <ul class="objectList">
+                    {% for bug in bugs %}
+                    <li class="objectListItem">
+                        <h5 class="objectListItemHead">#{{bug.bug_id}} - {{bug.name}}</h5>
+                        <p class="objectListItemDesc">
+                            {{bug.description}}
+                        </p>
+                        <p class="objectListItemDateTime">{{bug.timestamp}}</p>
+                        <div class="objectListItemProperties">
+                            <p>({{bug.category}})</p>
+                            <p>Priority: <span class="{{bug.priority}}">{{bug.priority}}</span></p>
+                        </div>
+                        <div class="objectListItemProp">
+                            <div class="objectListItemStatus">
+                                {% if bug.resolved and not bug.rejected%}
+                                <p id="resolved">
+                                    resolved
+                                </p>
+                                {% endif %}
+                                {% if bug.assigned_to and not bug.rejected and not bug.resolved %}
+                                <p id="processing">
+                                    Processing
+                                </p>
+                                {% endif %}
+                                {% if not bug.assigned_to and not bug.rejected and not bug.resolved %}
+                                <p id="reported">
+                                    Reported
+                                </p>
+                                {% endif %}
+                                {% if bug.rejected and not bug.resolved %}
+                                <p id="rejected">
+                                    rejected
+                                </p>
+                                {% endif %}
+
+                            </div>
+                            <div class="objectListItemAction">
+                                {% if not bug.assigned_to %}
+                                <a href="/delete_report/{{bug.bug_id}}/" class="objectActionPrimary">Delete</a>
+                                {% endif %}
+                                {% if bug.resolved or bug.rejected %}
+                                <a href="/reopen_report/{{bug.bug_id}}/" class="objectActionSecondary">Reopen</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="objectNewSide">
+            <h3 class="objectSubHead">Report a Bug</h3>
+            <form action="/report_bug/" method="post">
+                {% csrf_token %}
+                <input type="text" placeholder="Bug Name" name="name" required>
+                <textarea name="description" placeholder="Description" required></textarea>
+                <select name="priority">
+                    {% for priority in priorities %}
+                    <option value="{{priority.name}}">{{priority.name}}</option>
+                    {% endfor %}
+                </select>
+                <select name="category">
+                    {% for category in categories %}
+                    <option value="{{category.name}}">{{category.name}}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="submitBtn">Report</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% include 'main/footer.html' %}
+{% endblock body %}

@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+{% endblock head %}
+
+{% block title %} BUG TRACKER {% endblock title %}
+
+{% block body %}
+{% include 'main/topbar.html' %}
+
+<section class="container">
+    <div class="containerContent">
+        <h2>BUG TRACKER</h2>
+        <p>
+            Efficient bug tracker system for streamlined issue management and enhanced project development. Simplify,
+            track, and resolve bugs effectively.
+        </p>
+        <h4>Login as</h4>
+        <div class="actionBracket">
+            <a href="/login?role=user" class="actionBtn">User</a>
+            <a href="/login?role=developer" class="actionBtn">Developer</a>
+            <a href="/login?role=admin" class="actionBtn">Admin</a>
+        </div>
+
+    </div>
+</section>
+
+
+{% endblock body %}

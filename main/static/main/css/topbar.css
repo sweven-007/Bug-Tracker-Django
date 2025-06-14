@@ -1,0 +1,42 @@
+.topbar{
+    width: 100%;
+    background: var(--primary);
+    padding: 10px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.topbarIn{
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    cursor: default;
+}
+.topbarBrand {
+    font-size: 25px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--secondary);
+}
+.topbarName {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: rgb(180, 180, 180);
+}
+.topbarName span{
+    color: white;
+    font-weight: 600;
+}
+
+@media (max-width: 550px) {
+    .topbarBrand {
+        font-size: 18px;
+    }
+    .topbarName {
+        display: none;
+    }
+}

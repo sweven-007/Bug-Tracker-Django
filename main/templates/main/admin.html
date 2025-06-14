@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+{% endblock head %}
+
+{% block title %} ADMIN | BUG TRACKER {% endblock title %}
+
+{% block body %}
+{% include 'main/topbar.html' %}
+
+<section class="objectContainer">
+    <h3 class="objectHead">HOME - ADMIN</h3>
+    <div class="objectBlock">
+        <div class="objectListSide">
+            <div class="objectListBlock">
+                <h3 class="objectSubHead">Reported Bugs</h3>
+                <ul class="objectList">
+                    {% for bug in bugs %}
+                    <li class="objectListItem">
+                        <h5 class="objectListItemHead">#{{bug.bug_id}} - {{bug.name}}</h5>
+                        <p class="objectListItemDesc">
+                            {{bug.description}}
+                        </p>
+                        <p class="objectListItemDateTime">{{bug.timestamp}}</p>
+                        <div class="objectListItemProperties">
+                            <p>Reported by: <span>{{bug.raised_by.name}}</span></p>
+                        </div>
+                        <div class="objectListItemProperties">
+                            <p>({{bug.category}})</p>
+                            <p>Priority: <span class="{{bug.priority}}">{{bug.priority}}</span></p>
+                        </div>
+                        <div class="objectListItemProp">
+
+                            {% if not bug.assigned_to%}
+                            <form action="/assign_report/" method="post" id="assign-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="id_" value="{{bug.bug_id}}">
+                                <select name="assigned_to">
+                                    {% for developer in developers %}
+                                    <option value="{{developer.email}}">{{developer.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit">Assign</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'main/footer.html' %}
+{% endblock body %}
